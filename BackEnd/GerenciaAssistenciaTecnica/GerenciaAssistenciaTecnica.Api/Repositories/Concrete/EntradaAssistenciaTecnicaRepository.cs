@@ -76,6 +76,36 @@ namespace GerenciaAssistenciaTecnica.Api.Repositories
                                  .Include(x => x.EntradaAssistenciaDocumentos).Where(x => x.EntradaAssistenciaStatusId == (int)EntradaAssistenciaStatusEnum.Entrada);
         }
 
+        public async Task<IEnumerable<EntradaAssistenciaTecnica>> ReadBoardAsync()
+        {
+            var boardStatusIds = new[]
+            {
+                (int)EntradaAssistenciaStatusEnum.Entrada,
+                (int)EntradaAssistenciaStatusEnum.EmManutencao,
+                (int)EntradaAssistenciaStatusEnum.AguardandoSaida
+            };
+
+            return await _dbContext.EntradaAssistenciaTecnicas
+                .Include(x => x.Maquina)
+                .Include(x => x.PessoaFisica)
+                .Include(x => x.PessoaJuridica)
+                .Where(x => boardStatusIds.Contains(x.EntradaAssistenciaStatusId))
+                .ToListAsync();
+        }
+
+        public async Task<bool> UpdateStatusAsync(int id, int statusId)
+        {
+            var entradaAssistencia = await _dbContext.EntradaAssistenciaTecnicas.FindAsync(id);
+            if (entradaAssistencia == null)
+            {
+                return false;
+            }
+
+            entradaAssistencia.EntradaAssistenciaStatusId = statusId;
+            await _dbContext.SaveChangesAsync();
+            return true;
+        }
+
         public EntradaAssistenciaTecnica GetByIdAsync(int id)
         {
             return _dbContext.EntradaAssistenciaTecnicas

@@ -45,9 +45,19 @@ namespace GerenciaAssistenciaTecnica.Api.Services
             return await _entradaAssistenciaTecnicaRepository.ReadAllAsync();
         }
 
+        public async Task<IEnumerable<EntradaAssistenciaTecnica>> ReadBoardAsync()
+        {
+            return await _entradaAssistenciaTecnicaRepository.ReadBoardAsync();
+        }
+
         public EntradaAssistenciaTecnica ReadOneAsync(int id)
         {
             return _entradaAssistenciaTecnicaRepository.GetByIdAsync(id);
+        }
+
+        public async Task<bool> UpdateStatusAsync(int id, int statusId)
+        {
+            return await _entradaAssistenciaTecnicaRepository.UpdateStatusAsync(id, statusId);
         }
 
         public async Task SaveDocumentsToDatabase(int entradaAssistenciaId)

@@ -8,7 +8,7 @@
       </li>
 
       @for (p of entradaList; track p) {
-        <li class="list-group-item" cdkDrag>
+        <li class="list-group-item" cdkDrag [cdkDragDisabled]="isUpdating(p.id)">
           <mat-card appearance="outlined" class="card-board-assistencia">
             <mat-card-title>{{ p.name }}</mat-card-title>
             <mat-card-content>
@@ -36,7 +36,7 @@
       </li>
 
       @for (p of emManutencaoList; track p) {
-        <li class="list-group-item card-element" cdkDrag>
+        <li class="list-group-item card-element" cdkDrag [cdkDragDisabled]="isUpdating(p.id)">
           <mat-card appearance="outlined" class="card-board-assistencia">
             <mat-card-title>{{ p.name }}</mat-card-title>
             <mat-card-content>
@@ -64,7 +64,7 @@
       </li>
 
       @for (p of saidaList; track p) {
-        <li class="list-group-item card-element" cdkDrag>
+        <li class="list-group-item card-element" cdkDrag [cdkDragDisabled]="isUpdating(p.id)">
           <mat-card appearance="outlined" class="card-board-assistencia">
             <mat-card-title>{{ p.name }}</mat-card-title>
             <mat-card-content>

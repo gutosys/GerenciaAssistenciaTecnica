@@ -1,12 +1,17 @@
 import { Component, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { moveItemInArray, transferArrayItem, CdkDragDrop } from '@angular/cdk/drag-drop';
 import { EntradaAssistenciaService } from '../../shared/entrada-assistencia.service';
-import { IEntradaAssistencia } from '../../assistencia-tecnica/entrada-assistencia';
 import { EntradaAssistenciaDetailComponent } from '../../assistencia-tecnica/entrada-assistencia-detail/entrada-assistencia-detail.component';
 import { MatDialogConfig, MatDialog } from '@angular/material/dialog';
 import { SecurityService } from '../../security/security.service';
 import { AppUserAuth } from '../../security/app-user-auth';
+import { NotificationService } from '../../shared/notification.service';
+
+enum EntradaAssistenciaStatus {
+  Entrada = 1,
+  EmManutencao = 2,
+  AguardandoSaida = 4
+}
 
 export interface Character {
   name: string;
@@ -23,46 +28,98 @@ export interface Character {
 })
 
 export class BoardAssistenciaTecnicaComponent implements OnInit {
-  entradaList: IEntradaBoardList[];
+  entradaList: IEntradaBoardList[] = [];
   emManutencaoList: IEntradaBoardList[] = [];
   saidaList: IEntradaBoardList[] = [];
+  private updatingIds = new Set<number>();
   securityObject: AppUserAuth = null;
 
-  constructor(private httpClient: HttpClient,
-    private service: EntradaAssistenciaService,
+  constructor(private service: EntradaAssistenciaService,
     private dialog: MatDialog,
-    private securityService: SecurityService) {
+    private securityService: SecurityService,
+    private notificationService: NotificationService) {
     this.getEntradaAssistenciaList()
     this.securityObject = securityService.securityObject;
   }
 
   getEntradaAssistenciaList() {
-    this.service.getEntradaAssistencias().subscribe(
+    this.service.getBoardEntradas().subscribe(
       list => {
-        this.entradaList = list.map(item => {
-          return {
+        this.entradaList = [];
+        this.emManutencaoList = [];
+        this.saidaList = [];
+
+        list.forEach(item => {
+          const boardItem = {
             id: item.id,
             nome: item.nome,
             numeroNF: item.numeroNF,
             maquinaDesc: item.maquinaDesc,
             numeroSerie: item.numeroSerie,
-            entradaAssistenciaStatusId: item.entradaAssistenciaStatusId            
+            entradaAssistenciaStatusId: item.entradaAssistenciaStatusId
           };
+
+          switch (boardItem.entradaAssistenciaStatusId) {
+            case EntradaAssistenciaStatus.Entrada:
+              this.entradaList.push(boardItem);
+              break;
+            case EntradaAssistenciaStatus.EmManutencao:
+              this.emManutencaoList.push(boardItem);
+              break;
+            case EntradaAssistenciaStatus.AguardandoSaida:
+              this.saidaList.push(boardItem);
+              break;
+          }
         });
-      });
+      },
+      () => this.notificationService.warn('Nao foi possivel carregar os itens do Board.')
+    );
   }
 
   drop(event: CdkDragDrop<IEntradaBoardList[]>) {
-
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-    } else {
-
-      transferArrayItem(event.previousContainer.data,
-        event.container.data,
-        event.previousIndex,
-        event.currentIndex);
+      return;
     }
+
+    const item = event.previousContainer.data[event.previousIndex];
+    const newStatusId = this.getStatusId(event.container.data);
+    this.updatingIds.add(item.id);
+
+    this.service.updateEntradaAssistenciaStatus(item.id, newStatusId).subscribe(
+      () => {
+        const previousIndex = event.previousContainer.data.findIndex(candidate => candidate.id === item.id);
+        const currentIndex = Math.min(event.currentIndex, event.container.data.length);
+        transferArrayItem(
+          event.previousContainer.data,
+          event.container.data,
+          previousIndex,
+          currentIndex
+        );
+        item.entradaAssistenciaStatusId = newStatusId;
+        this.updatingIds.delete(item.id);
+      },
+      () => {
+        this.updatingIds.delete(item.id);
+        this.notificationService.warn('Nao foi possivel atualizar o status. O item permaneceu na coluna atual.');
+      }
+    );
+  }
+
+  isUpdating(id: number): boolean {
+    return this.updatingIds.has(id);
+  }
+
+  private getStatusId(list: IEntradaBoardList[]): number {
+    if (list === this.entradaList) {
+      return EntradaAssistenciaStatus.Entrada;
+    }
+
+    if (list === this.emManutencaoList) {
+      return EntradaAssistenciaStatus.EmManutencao;
+    }
+
+    return EntradaAssistenciaStatus.AguardandoSaida;
   }
 
   ngOnInit() {

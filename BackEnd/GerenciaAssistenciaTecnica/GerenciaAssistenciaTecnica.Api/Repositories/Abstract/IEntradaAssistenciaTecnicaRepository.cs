@@ -20,7 +20,11 @@ namespace GerenciaAssistenciaTecnica.Api.Repositories
         
         Task<IEnumerable<EntradaAssistenciaTecnica>> ReadAllAsync();
 
+        Task<IEnumerable<EntradaAssistenciaTecnica>> ReadBoardAsync();
+
         EntradaAssistenciaTecnica GetByIdAsync(int id);
+
+        Task<bool> UpdateStatusAsync(int id, int statusId);
 
         void Delete(EntradaAssistenciaTecnica entradaAssistenciaTecnica);
 

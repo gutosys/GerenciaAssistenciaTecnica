@@ -96,6 +96,14 @@ export class EntradaAssistenciaService {
     return this.http.get<IEntradaAssistencia[]>(API_URL);
   }
 
+  getBoardEntradas(): Observable<IEntradaAssistencia[]> {
+    return this.http.get<IEntradaAssistencia[]>(API_URL + 'board');
+  }
+
+  updateEntradaAssistenciaStatus(id: number, statusId: number): Observable<void> {
+    return this.http.put<void>(API_URL + id + '/status', statusId, httpOptions);
+  }
+
   getEntradaAssistencia(id: number): Observable<IEntradaAssistencia> {
     return this.http.get<IEntradaAssistencia>(API_URL + id.toString());
   }

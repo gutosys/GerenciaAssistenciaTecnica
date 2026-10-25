@@ -20,7 +20,11 @@ namespace GerenciaAssistenciaTecnica.Api.Services
 
         Task<IEnumerable<EntradaAssistenciaTecnica>> ReadAllAsync();
 
+        Task<IEnumerable<EntradaAssistenciaTecnica>> ReadBoardAsync();
+
         EntradaAssistenciaTecnica ReadOneAsync(int id);
+
+        Task<bool> UpdateStatusAsync(int id, int statusId);
 
         Task UpdateAsync(EntradaAssistenciaTecnica entradaAssistenciaTecnica);
 

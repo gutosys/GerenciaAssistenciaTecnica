@@ -60,7 +60,54 @@ namespace GerenciaAssistenciaTecnica.Api.Controllers
             return Ok(entradaAssistenciaTecnicaList);
         }
 
-        [HttpGet("{id}")]
+        [HttpGet("board")]
+        [ProducesResponseType(typeof(IEnumerable<EntradaAssistenciaTecnicaViewModel>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> ReadBoardAsync()
+        {
+            var entradas = await _entradaAssistenciaTecnicaService.ReadBoardAsync();
+            var boardItems = entradas.Select(entrada => new EntradaAssistenciaTecnicaViewModel
+            {
+                Id = entrada.Id,
+                Nome = entrada.PessoaFisica?.Nome == null
+                    ? entrada.PessoaJuridica?.RazaoSocial + " - CNPJ: " + entrada.PessoaJuridica?.Cnpj
+                    : entrada.PessoaFisica.Nome + " - CPF: " + entrada.PessoaFisica.Cpf,
+                MaquinaDesc = entrada.Maquina?.Modelo,
+                NumeroNF = entrada.NumeroNF,
+                NumeroSerie = entrada.NumeroSerie,
+                EntradaAssistenciaStatusId = entrada.EntradaAssistenciaStatusId
+            });
+
+            return Ok(boardItems);
+        }
+
+        [HttpPut("{id:int}/status")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<IActionResult> UpdateStatusAsync(int id, [FromBody]int statusId)
+        {
+            var boardStatuses = new[]
+            {
+                (int)EntradaAssistenciaStatusEnum.Entrada,
+                (int)EntradaAssistenciaStatusEnum.EmManutencao,
+                (int)EntradaAssistenciaStatusEnum.AguardandoSaida
+            };
+
+            if (!boardStatuses.Contains(statusId))
+            {
+                return BadRequest("Status invalido para o Board.");
+            }
+
+            var updated = await _entradaAssistenciaTecnicaService.UpdateStatusAsync(id, statusId);
+            if (!updated)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        [HttpGet("{id:int}")]
         [ProducesResponseType(typeof(EntradaAssistenciaTecnicaViewModel), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         public EntradaAssistenciaTecnicaViewModel ReadOneAsync(int id)

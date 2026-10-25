@@ -38,12 +38,12 @@ namespace GerenciaAssistenciaTecnica.Api.Controllers
                         Email = pessoa.Cliente.Email,
                         Telefone = pessoa.Cliente.Telefone,
                         Celular = pessoa.Cliente.Celular,
-                        Rua = pessoa.Cliente.Endereco.Rua,
-                        Bairro = pessoa.Cliente.Endereco.Bairro,
-                        Numero = pessoa.Cliente.Endereco.Numero,
-                        Cep = pessoa.Cliente.Endereco.Cep,
-                        CidadeId = pessoa.Cliente.Endereco.CidadeId,
-                        EstadoId = pessoa.Cliente.Endereco.EstadoId,
+                        Rua = pessoa.Cliente.Endereco?.Rua,
+                        Bairro = pessoa.Cliente.Endereco?.Bairro,
+                        Numero = pessoa.Cliente.Endereco?.Numero,
+                        Cep = pessoa.Cliente.Endereco?.Cep,
+                        CidadeId = pessoa.Cliente.Endereco?.CidadeId,
+                        EstadoId = pessoa.Cliente.Endereco?.EstadoId,
                         ClienteId = pessoa.Cliente.Id,
                         EnderecoId = pessoa.Cliente.Endereco.Id
                     }
