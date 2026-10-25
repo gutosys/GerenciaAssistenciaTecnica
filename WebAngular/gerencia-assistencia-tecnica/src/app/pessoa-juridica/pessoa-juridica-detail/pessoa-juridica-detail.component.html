@@ -1,0 +1,188 @@
+<mat-toolbar>
+  <span>{{ tela }} - {{service.form.controls['id'].value?"Editar":"Novo"}}</span>
+  <span class="fill-remaining-space"></span>
+  <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1">
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-toolbar>
+<form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()">
+  <mat-grid-list cols="2" rowHeight="80px">
+
+    @if (errors.length > 0) {
+      <mat-grid-tile>
+        @if (errors.length > 0) {
+          <div class="usuario-invalido" role="alert">
+            <ul>
+              @for (error of errors; track error) {
+                <li>
+                  {{ error }}
+                </li>
+              }
+            </ul>
+          </div>
+        }
+      </mat-grid-tile>
+    }
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <input type="hidden" formControlName="id">
+        <input type="hidden" formControlName="clienteId">
+        <input type="hidden" formControlName="enderecoId">
+
+        <mat-form-field>
+          <input formControlName="razaoSocial" matInput placeholder="Razão Social*">
+          <mat-error>O campo Razão Social é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <input formControlName="nomeFantasia" matInput placeholder="Nome Fantasia*">
+          <mat-error>O campo Nome Fantasia é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <input formControlName="cnpj" matInput placeholder="CNPJ*">
+          <mat-error>O campo CNPJ é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <input formControlName="ie" matInput placeholder="Inscrição Estadual">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <mat-label>Regime Tributario*</mat-label>
+          <mat-select formControlName="regimeTributarioId">
+            @for (regimeTributario of regimeTributarioService.regimeTributarioList; track regimeTributario) {
+              <mat-option [value]="regimeTributario.id">
+                {{regimeTributario.descricao}}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>O campo Regime Tributário é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <input formControlName="email" matInput placeholder="Email*">
+          <mat-error>O campo Email é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <input formControlName="telefone" matInput placeholder="Telefone*">
+          <mat-error>O campo Telefone é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <input formControlName="celular" matInput placeholder="Celular">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+
+        <mat-form-field>
+          <input formControlName="rua" matInput placeholder="Rua*">
+          <mat-error>O campo Rua é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <input formControlName="bairro" matInput placeholder="Bairro*">
+          <mat-error>O campo Bairro é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <input formControlName="numero" matInput placeholder="Número*">
+          <mat-error>O campo Número é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <input formControlName="cep" matInput placeholder="CEP*">
+          <mat-error>O campo CEP é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <mat-label>Estado*</mat-label>
+          <mat-select (selectionChange)="onSelect($event)" formControlName="estadoId">
+            @for (estado of estadoService.estadoList; track estado) {
+              <mat-option [value]="estado.id">
+                {{estado.descricao}}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>O campo Estado é obrigatório</mat-error>
+        </mat-form-field>
+
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <mat-label>Cidade*</mat-label>
+          <mat-select formControlName="cidadeId">
+            <mat-option value="0">--Select--</mat-option>
+            @for (cidade of cidades; track cidade) {
+              <mat-option [value]="cidade.id">
+                {{cidade.descricao}}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>O campo Cidade é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile colspan="2">
+      <div class="controles-container buttons">
+        <div class="button-row">
+          <button mat-raised-button color="primary" type="submit" [disabled]="service.form.invalid">Salvar</button>
+          <button mat-raised-button color="warn" (click)="onClear()">Limpar</button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>

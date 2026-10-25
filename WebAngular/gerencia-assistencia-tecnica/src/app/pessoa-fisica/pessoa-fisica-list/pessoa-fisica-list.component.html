@@ -1,0 +1,79 @@
+<div class="search-div">
+  <label class="label-list">{{ tela }}</label>
+  
+  <button mat-mini-fab color="primary" (click)="onCreate()">
+    <mat-icon>add</mat-icon>
+  </button>
+
+  <mat-form-field class="search-form-field" floatLabel="never">
+    <input matInput [(ngModel)]="searchKey" placeholder="Pesquisar" autocomplete="off" (keyup)="applyFilter()">
+    <button mat-button matSuffix mat-icon-button aria-label="Limpar"*ngIf="searchKey"  (click)="onSearchClear()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<div class="mat-elevation-z8">
+  <table mat-table [dataSource]="listData" matSort>
+  
+    <!--Row Definition-->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>    
+  
+    <!-- Position Column -->
+    <ng-container matColumnDef="nome">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
+      <td mat-cell *matCellDef="let element"> {{element.nome}} </td>
+    </ng-container>  
+    
+    <ng-container matColumnDef="sobrenome">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Sobrenome </th>
+      <td mat-cell *matCellDef="let element"> {{element.sobrenome}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="cpf">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> CPF </th>
+      <td mat-cell *matCellDef="let element"> {{element.cpf}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="rg">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> RG </th>
+      <td mat-cell *matCellDef="let element"> {{element.rg}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="email">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Email </th>
+      <td mat-cell *matCellDef="let element"> {{element.email}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="celular">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> Celular </th>
+      <td mat-cell *matCellDef="let element"> {{element.Celular}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef> Ações </th>
+        <td mat-cell *matCellDef="let element"> 
+          <button mat-icon-button (click)="onEdit(element)"><mat-icon>launch</mat-icon></button>
+          <button mat-icon-button color="warn" (click)="onDelete(element.id)"><mat-icon>delete_outline</mat-icon></button>
+        </td>
+      </ng-container>
+
+      <ng-container matColumnDef="loading">            
+          <mat-footer-cell *matFooterCellDef colspan="6">
+            Carregando dados...
+          </mat-footer-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="noData">            
+            <mat-footer-cell *matFooterCellDef colspan="6">
+              Não Existes dados a serem exibidos...
+            </mat-footer-cell>
+          </ng-container>
+      
+      <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide':listData!=null}"></mat-footer-row>
+      <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide':!(listData!=null && listData.data.length==0)}"></mat-footer-row>
+  </table>
+
+  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+</div>

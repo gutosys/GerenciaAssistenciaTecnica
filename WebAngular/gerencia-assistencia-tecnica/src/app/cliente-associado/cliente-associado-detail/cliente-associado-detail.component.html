@@ -1,0 +1,59 @@
+<mat-toolbar>
+  <span>{{ tela }} - {{ service.form.controls['id'].value?"Editar":"Novo"}}</span>
+  <span class="fill-remaining-space"></span>
+  <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1">
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-toolbar>
+
+<form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()">
+  <mat-grid-list cols="2" rowHeight="40px">
+    <input type="hidden" formControlName="id">
+
+    <mat-grid-tile [rowspan]="2">
+      <div class="controles-container">
+
+        <mat-form-field>
+          <input formControlName="nome" matInput placeholder="Nome*">
+          <mat-error>O campo Nome é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [rowspan]="2">
+      <div class="controles-container">
+
+        <mat-form-field>
+          <input formControlName="telefone" matInput placeholder="Telefone">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile [rowspan]="2">
+      <div class="controles-container">
+        <mat-form-field>
+          <mat-label>Pessoa Jurídica</mat-label>
+          <mat-select formControlName="pessoaJuridicaId">
+            <mat-option value="0">--Selecione--</mat-option>
+            @for (pessoaJuridica of pessoaJuridicaService.pessoaJuridicaList; track pessoaJuridica) {
+              <mat-option [value]="pessoaJuridica.id">
+                {{ pessoaJuridica.razaoSocial }} CNPJ: {{ pessoaJuridica.cnpj }}
+              </mat-option>
+            }
+          </mat-select>
+          <mat-error>O campo Pessoa Jurídica é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <!-- <mat-grid-tile [colspan]="2" id="buttonSave" *ngIf="acessoBotoes"> -->
+    <mat-grid-tile [colspan]="2" id="buttonSave">
+      <div class="controles-container">
+        <div class="button-row">
+          <button mat-raised-button color="primary" type="submit" class="buttonSaveEntrada" [disabled]="service.form.invalid">Salvar</button>
+          <button mat-raised-button color="warn" (click)="onClear()">Limpar</button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>

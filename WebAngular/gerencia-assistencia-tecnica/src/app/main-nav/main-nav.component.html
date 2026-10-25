@@ -1,0 +1,85 @@
+<mat-sidenav-container class="sidenav-container">
+  @if (securityObject.isAuthenticated) {
+    <mat-sidenav #drawer class="sidenav mat-elevation-z4" fixedInViewport="false"
+      [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
+      [mode]="(isHandset$ | async) ? 'over' : 'side'"
+      [opened]="!(isHandset$ | async)"
+      >
+      <mat-toolbar class="menu">Menu</mat-toolbar>
+      <mat-nav-list>
+        <mat-list-item [matMenuTriggerFor]="menuCadastro" *hasClaim="'CanAccessCadastro'">
+          <mat-icon>unfold_more</mat-icon>
+          <a matline>Cadastro</a>
+        </mat-list-item>
+        <mat-menu #menuCadastro="matMenu">
+          <button mat-menu-item [routerLink]="['/regime-tributario']" *hasClaim="'CanAccessTipoEmpresa'">Regime Tributário</button>
+          <button mat-menu-item [routerLink]="['/maquina']" *hasClaim="'CanAccessMaquina'">Máquina</button>
+          <button mat-menu-item [routerLink]="['/problema']" *hasClaim="'CanAccessProblema'">Problema</button>
+          <button mat-menu-item [routerLink]="['/pessoa-fisica']" *hasClaim="'CanAccessPessoaFisica'">Pessoa Física</button>
+          <button mat-menu-item [routerLink]="['/pessoa-juridica']" *hasClaim="'CanAccessPessoaJuridica'">Pessoa Jurídica</button>
+          <button mat-menu-item [routerLink]="['/funcionario']" *hasClaim="'CanAccessFuncionario'">Funcionário</button>
+          <button mat-menu-item [routerLink]="['/cliente-associado']">Cliente Associado</button>
+          <!-- <button mat-menu-item [routerLink]="['/etiqueta']">Etiqueta</button>   -->
+          <button mat-menu-item [routerLink]="['/comprovante-compra']">Comprovante de Compra</button>
+          <button mat-menu-item [routerLink]="['/entregue-por']">Entregue Por</button>
+          <button mat-menu-item [routerLink]="['/acessorio']">Acessórios</button>
+          <!-- <button mat-menu-item [routerLink]="['/cliente-associado']" *hasClaim="'CanAccessClienteAssociado'">Cliente Associado</button>   -->
+        </mat-menu>
+        <mat-list-item [matMenuTriggerFor]="menuEstoque">
+          <mat-icon>unfold_more</mat-icon>
+          <a matline>Estoque</a>
+        </mat-list-item>
+        <mat-menu #menuEstoque="matMenu">
+          <button mat-menu-item [routerLink]="['/categoria']" *hasClaim="'CanAccessCategoria'">Categoria</button>
+          <button mat-menu-item [routerLink]="['/componente']" *hasClaim="'CanAccessComponente'">Componente</button>
+          <button mat-menu-item [routerLink]="['/estoque']" *hasClaim="'CanAccessEstoque'">Estoque</button>
+        </mat-menu>
+        <mat-list-item [matMenuTriggerFor]="menuAssitencia">
+          <mat-icon>unfold_more</mat-icon>
+          <a matline>Assistência Técnica</a>
+        </mat-list-item>
+        <mat-menu #menuAssitencia="matMenu">
+          <button mat-menu-item [routerLink]="['/entrada-assistencia']" *hasClaim="'CanAccessEntradaAssistencia'">Entrada Assistência Técnica</button>
+          <button mat-menu-item [routerLink]="['/board-assistencia-tecnica']" *hasClaim="'CanAccessBoardAssistencia'">Board Assistência Técnica</button>
+        </mat-menu>
+        <mat-list-item [matMenuTriggerFor]="menuGarantia">
+          <mat-icon>unfold_more</mat-icon>
+          <a matline>Garantia</a>
+        </mat-list-item>
+        <mat-menu #menuGarantia="matMenu">
+          <button mat-menu-item [routerLink]="['/board-garantia']" *hasClaim="'CanAccessBoardGarantia'">Board Garantia</button>
+        </mat-menu>
+      </mat-nav-list>
+    </mat-sidenav>
+  }
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      @if (securityObject.isAuthenticated && (isHandset$ | async)) {
+        <button
+          type="button"
+          aria-label="Toggle sidenav"
+          mat-icon-button
+          (click)="toggleSidenav()"
+          >
+          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+        </button>
+      }
+      <span>GerenciaAssistenciaTecnica</span>
+
+      <span class="spacer"></span>
+
+      <!-- <a [routerLink]="['/app-home']">Home</a> -->
+
+
+      @if (!securityObject.isAuthenticated) {
+        <a routerLink="login">Login</a>
+      }
+      @if (securityObject.isAuthenticated) {
+        <a href="#" (onclick)="logout()">{{securityObject.userName}} - Sair</a>
+      }
+
+    </mat-toolbar>
+    <!-- Add Content Here -->
+    <ng-content></ng-content>
+  </mat-sidenav-content>
+</mat-sidenav-container>

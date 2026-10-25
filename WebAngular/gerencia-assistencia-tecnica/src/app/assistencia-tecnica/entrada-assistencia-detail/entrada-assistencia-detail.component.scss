@@ -1,0 +1,48 @@
+.mat-mdc-radio-button{
+    padding: 10px;
+}
+
+#singleFile{
+    margin-left: 10px;
+}
+
+#acessorio{
+    height: 50px;
+}
+
+#file-list-element{
+    margin-top: 30px;
+    border: 1px solid black;    
+}
+
+app-entrada-assistencia-files{
+    align-self: flex-start;
+    justify-content: start;
+}
+
+.documentos-container{
+    height: 300px;
+    border: 1px solid #a5aaac;    
+    margin-top: 30px;
+    overflow-y: auto;
+}
+
+// div.mat-tab-body-content {
+//     padding-bottom: 5px !important;
+// }
+
+.usuario-invalido{
+    width: 350px;
+    height: 30px;
+    background-color: crimson;
+    color: white;
+    text-align: center;
+    font-weight: 300;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    li{
+        list-style-type: none;
+    }
+}

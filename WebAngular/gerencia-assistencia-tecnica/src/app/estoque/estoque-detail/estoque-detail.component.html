@@ -1,0 +1,59 @@
+<mat-toolbar>
+  <span>{{ tela }} - {{service.form.controls['id'].value?"Editar":"Novo"}}</span>
+  <span class="fill-remaining-space"></span>
+  <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1"><mat-icon>clear</mat-icon></button>
+</mat-toolbar>
+<form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()">
+  <mat-grid-list cols="2" rowHeight="80px">
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <input type="hidden" formControlName="id">
+        <input type="hidden" formControlName="clienteId">
+
+        <mat-form-field>
+          <input formControlName="quantidade" matInput placeholder="Quantidade*">
+          <mat-error>O campo Quantidade é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <input type="hidden" formControlName="id">
+        <input type="hidden" formControlName="clienteId">
+
+        <mat-form-field>
+          <input formControlName="quantidadeMinima" matInput placeholder="QuantidadeMinima*">
+          <mat-error>O campo Quantidade Mínina é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+
+    <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <mat-label>Componente</mat-label>
+          <mat-select  formControlName="componenteId">
+            <mat-option value="0">--Select--</mat-option>
+            @for (componente of componenteService.componenteList; track componente) {
+              <mat-option [value]="componente.id">
+                {{componente.nome}}
+              </mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+    <mat-grid-tile  colspan="2">
+      <div class="controles-container buttons">
+        <div class="button-row">
+          <button mat-raised-button color="primary" type="submit" [disabled]="service.form.invalid">Salvar</button>
+          <button mat-raised-button color="warn" (click)="onClear()">Limpar</button>
+        </div>
+      </div>
+    </mat-grid-tile>
+  </mat-grid-list>
+</form>

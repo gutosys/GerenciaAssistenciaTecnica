@@ -1,0 +1,83 @@
+.cdk-drop-list-dragging .cdk-drag {
+    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+    }
+
+    .cdk-drag-animating {
+        transition: transform 300ms cubic-bezier(0, 0, 0.2, 1);
+    }
+    
+    .img-person {
+        border-radius: 35%;
+        width: 80px;
+    }
+
+    .container{
+        height: calc(100% - 64px);
+        display: grid;
+        grid-template-areas: "entrada confirmados saida";
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 100%;
+        grid-gap: 10px;
+    }
+
+    .container ul{
+        padding: 0px;
+        margin: 0px;
+    }
+    .container li{
+        list-style-type: none;
+    }
+
+    .container h3{
+        margin: 0px;
+        padding-left: 10px;
+    }
+
+    .entrada{
+        grid-area: "entrada";
+        border: 1px solid #36454f;
+    }
+
+    .entrada-header{
+        padding: 15px;
+        text-align: center;
+        background-color: #cc2a36;
+        color: #FFFFFF;
+    }
+
+    .confirmados{
+        grid-area: "confirmados";
+        border: 1px solid #36454f;
+    }
+
+    .confirmados-header{
+        padding: 15px;
+        text-align: center;
+        background-color: #075ba3;
+        color: #FFFFFF;
+    }
+    
+    .saida{
+        grid-area: "saida";
+        border: 1px solid #36454f;
+    }
+
+    .saidaHeader{
+        padding: 15px;
+        text-align: center;
+        background-color: #006600;
+        color: #FFFFFF;
+    }
+
+    li.list-group-item.cdk-drag{
+        height: 190px;        
+        margin: 10px;
+        padding-bottom: 15px;
+        background-color: #FFFFFF;
+        list-style-type: none;
+    }
+
+    .card-board-assistencia {        
+        height: 190px;
+        padding: 15px 15px 0px 15px;
+    }  

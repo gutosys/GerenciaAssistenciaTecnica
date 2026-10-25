@@ -1,0 +1,88 @@
+<div class="container">
+
+  <div cdkDropList #entrada="cdkDropList" [cdkDropListConnectedTo]="[emManutencao]" [cdkDropListData]="entradaList"
+    class="entrada col-lg-6" (cdkDropListDropped)="drop($event)">
+    <ul class="list-group">
+      <li class="list-group-item entrada-header">
+        <h3>Aprovados</h3>
+      </li>
+
+      @for (p of entradaList; track p) {
+        <li class="list-group-item" cdkDrag>
+          <mat-card appearance="outlined" class="card-board-assistencia">
+            <mat-card-title>{{ p.name }}</mat-card-title>
+            <mat-card-content>
+              <p><b>Nome: </b> {{ p.nome }}</p>
+              <p><b>NF: </b> {{ p.numeroNF }}</p>
+              <p><b>Máquina: </b> {{ p.maquinaDesc }}</p>
+              <p><b>Número Série: </b> {{ p.numeroSerie }}</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <div class="button-row">
+                <button mat-raised-button color="primary" type="button" (click)="openVisualizarEntradaAssistencia(p.id)" >Visualizar</button>
+                <!-- <button mat-raised-button color="primary" type="button" (click)="openVisualizarEntradaAssistencia(p.id)" *hasClaim="'CanAccessBoardAssistencia' && entradaAssistenciaStatusId != 2">Adicionar Descrição</button> -->
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </li>
+      }
+    </ul>
+  </div>
+
+  <div cdkDropList #emManutencao="cdkDropList" [cdkDropListData]="emManutencaoList" [cdkDropListConnectedTo]="[entrada, saida]" (cdkDropListDropped)="drop($event)"  class="confirmados col-lg-6">
+    <ul class="list-group">
+      <li class="list-group-item active confirmados-header">
+        <h3>Em Manutenção</h3>
+      </li>
+
+      @for (p of emManutencaoList; track p) {
+        <li class="list-group-item card-element" cdkDrag>
+          <mat-card appearance="outlined" class="card-board-assistencia">
+            <mat-card-title>{{ p.name }}</mat-card-title>
+            <mat-card-content>
+              <p><b>Nome: </b> {{ p.nome }}</p>
+              <p><b>NF: </b> {{ p.numeroNF }}</p>
+              <p><b>Máquina: </b> {{ p.maquinaDesc }}</p>
+              <p><b>Número Série: </b> {{ p.numeroSerie }}</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <div class="button-row">
+                <button mat-raised-button color="primary" type="button" (click)="openVisualizarEntradaAssistencia(p.id)" >Visualizar</button>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </li>
+      }
+
+    </ul>
+  </div>
+
+  <div cdkDropList #saida="cdkDropList" [cdkDropListData]="saidaList" [cdkDropListConnectedTo]="[emManutencao]" (cdkDropListDropped)="drop($event)" class="saida col-lg-6">
+    <ul class="list-group">
+      <li class="list-group-item active saidaHeader">
+        <h3>Aguardando Saída</h3>
+      </li>
+
+      @for (p of saidaList; track p) {
+        <li class="list-group-item card-element" cdkDrag>
+          <mat-card appearance="outlined" class="card-board-assistencia">
+            <mat-card-title>{{ p.name }}</mat-card-title>
+            <mat-card-content>
+              <p><b>Nome: </b> {{ p.nome }}</p>
+              <p><b>NF: </b> {{ p.numeroNF }}</p>
+              <p><b>Máquina: </b> {{ p.maquinaDesc }}</p>
+              <p><b>Número Série: </b> {{ p.numeroSerie }}</p>
+            </mat-card-content>
+            <mat-card-actions>
+              <div class="button-row">
+                <button mat-raised-button color="primary" type="button" (click)="openVisualizarEntradaAssistencia(p.id)" >Visualizar</button>
+              </div>
+            </mat-card-actions>
+          </mat-card>
+        </li>
+      }
+
+    </ul>
+  </div>
+
+</div>

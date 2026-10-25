@@ -1,0 +1,23 @@
+.login{
+    height: calc(100% - 64px);
+    display: flex;
+    flex-flow: column;
+    align-items: center; 
+    justify-content: center;
+}
+
+.example-card {
+    width: 400px;    
+}
+
+.example-full-width{
+    width: 100%;
+}
+
+.usuario-invalido{
+    width: 250px;
+    height: 15px;
+    background-color: crimson;
+    color: white;
+    text-align: center;    
+}

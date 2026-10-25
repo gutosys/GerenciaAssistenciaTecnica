@@ -1,0 +1,66 @@
+<mat-toolbar>
+  <span>{{ tela }} - {{service.form.controls['id'].value?"Editar":"Novo"}}</span>
+  <span class="fill-remaining-space"></span>
+  <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1"><mat-icon>clear</mat-icon></button>
+</mat-toolbar>
+<form [formGroup]="service.form" class="normal-form" (submit)="onSubmit()">
+  <mat-grid-list cols="2" rowHeight="80px">
+      
+    <mat-grid-tile>
+        <div class="controles-container">
+            <input type="hidden" formControlName="id">
+            <input type="hidden" formControlName="clienteId">            
+      
+          <mat-form-field>
+            <input formControlName="nome" matInput placeholder="Nome*">
+            <mat-error>O campo Nome é obrigatório</mat-error>
+          </mat-form-field> 
+        </div>
+      </mat-grid-tile>       
+
+          <mat-grid-tile>
+              <div class="controles-container">
+          <mat-form-field>
+            <input formControlName="descrição" matInput placeholder="Descrição">
+            
+          </mat-form-field>        
+        </div>
+     </mat-grid-tile>
+
+     <mat-grid-tile>
+      <div class="controles-container">
+        <mat-form-field>
+          <input [value]="service.form.controls['precoCompra'].value | currency:'BRL':'symbol':'0.0-2':'pt'" formControlName="precoCompra" matInput placeholder="Preço de Compra*">
+          <mat-error>O campo Preço de Compra é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+
+       <mat-grid-tile>
+          <div class="controles-container">
+          <mat-form-field>
+            <input [value]="service.form.controls['precoVenda'].value | currency:'BRL':'symbol':'0.0-2':'pt'" formControlName="precoVenda" matInput placeholder="Preço de Venda*">
+            <mat-error>O campo Preço de Venda é obrigatório</mat-error>
+          </mat-form-field>  
+        </div>
+      </mat-grid-tile>      
+
+      <mat-grid-tile>
+          <div class="controles-container">
+          <mat-form-field>
+            <input [value]="service.form.controls['precoVendaAutorizada'].value | currency:'BRL':'symbol':'0.0-2':'pt'" formControlName="precoVendaAutorizada" matInput placeholder="Preço de Venda Autorizada*">
+            <mat-error>O campo Preço de Venda Autorizada é obrigatório</mat-error>
+          </mat-form-field>
+        </div>
+      </mat-grid-tile>
+        
+           <mat-grid-tile  colspan="2">
+          <div class="controles-container buttons">
+          <div class="button-row">
+            <button mat-raised-button color="primary" type="submit" [disabled]="service.form.invalid">Salvar</button>
+            <button mat-raised-button color="warn" (click)="onClear()">Limpar</button>
+          </div>
+        </div>
+  </mat-grid-tile>
+</mat-grid-list>
+</form>

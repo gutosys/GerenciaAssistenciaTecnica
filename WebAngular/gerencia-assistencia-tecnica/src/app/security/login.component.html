@@ -1,0 +1,48 @@
+<!-- TEMPORARY CODE TO VIEW SECURITY OBJECT -->
+<!-- <div class="row">
+<div class="col-xs-12">
+  <label>{{securityObject | json}}</label>
+</div>
+</div> -->
+
+<div class="login">
+  @if (securityObject &&
+    !securityObject.isAuthenticated) {
+    <div class="alert alert-danger">
+      <mat-card appearance="outlined" class="usuario-invalido">
+        <p>Usuário/Senha Inválido</p>
+      </mat-card>
+    </div>
+  }
+
+  <mat-card appearance="outlined" class="example-card">
+    <mat-card-header>
+      <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <form class="example-form">
+        <table class="example-full-width" cellspacing="0">
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Login" [(ngModel)]="user.userName" name="userName" required>
+              </mat-form-field>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <mat-form-field class="example-full-width">
+                <input matInput placeholder="Password" [(ngModel)]="user.password" type="password" name="password"
+                  required>
+              </mat-form-field>
+            </td>
+          </tr>
+        </table>
+      </form>
+      <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-raised-button (click)="login()" color="primary">Entrar</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

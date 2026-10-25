@@ -1,0 +1,352 @@
+<mat-toolbar>
+  <span>{{ tela }} - {{ formEntradaAssistencia.controls['id'].value? "Editar":"Novo"}}</span>
+  <span class="fill-remaining-space"></span>
+  <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1">
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-toolbar>
+
+<mat-tab-group [dynamicHeight]="true">
+  <mat-tab label="Dados">
+
+    @if (errors.length > 0) {
+      <div class="usuario-invalido" role="alert">
+        <ul>
+          @for (error of errors; track error) {
+            <li>
+              {{ error }}
+            </li>
+          }
+        </ul>
+      </div>
+    }
+
+    <form novalidate [formGroup]="formEntradaAssistencia" class="normal-form" (submit)="onSubmit()">
+      <mat-grid-list cols="2" rowHeight="40px">
+        <input type="hidden" formControlName="id">
+
+        <mat-grid-tile [rowspan]="2">
+          <div class="controles-container">
+
+            <mat-form-field>
+              <input formControlName="ns" matInput placeholder="NS*">
+              <mat-error>O campo NS é obrigatório</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+
+        @if (formEntradaAssistencia.controls['id'].value) {
+          <mat-grid-tile [rowspan]="2">
+            <div class="controles-container">
+              <mat-form-field>
+                <input [readonly]="true" formControlName="dataEntrada" matInput placeholder="Data de Entrada">
+              </mat-form-field>
+            </div>
+          </mat-grid-tile>
+        }
+        <!-- <mat-grid-tile *ngIf="formEntradaAssistencia.controls['id'].value" [rowspan]="2">
+        <p>Data de Entrada: {{ formEntradaAssistencia.controls['dataEntrada '].value}}</p>
+      </mat-grid-tile> -->
+
+
+      <mat-grid-tile [rowspan]="2">
+        <mat-radio-group [disabled]="!acessoBotoes" aria-label="Select an option" value="pessoaFisica">
+          <mat-radio-button value="pessoaFisica" [checked]="HasPessoaFisica" formControlName="tipoPessoa" (click)="acessoBotoes && !formEntradaAssistencia.controls['id'].value && setradio('Fisica')"
+            ngDefaultControl>Pessoa Física
+          </mat-radio-button>
+
+          <mat-radio-button value="pessoaJuridica" [checked]="!HasPessoaFisica" formControlName="tipoPessoa" (click)="acessoBotoes && !formEntradaAssistencia.controls['id'].value && setradio('Juridica')"
+            ngDefaultControl>Pessoa Jurídica
+          </mat-radio-button>
+        </mat-radio-group>
+      </mat-grid-tile>
+
+      @if (HasPessoaFisica) {
+        <mat-grid-tile [rowspan]="2">
+          <div class="controles-container">
+            <mat-form-field>
+              <mat-label>Pessoa Física*</mat-label>
+              <mat-select formControlName="pessoaFisica">
+                <mat-option value="0">--Selecione--</mat-option>
+                @for (pessoaFisica of pessoaFisicaService.pessoaFisicaList; track pessoaFisica) {
+                  <mat-option [value]="pessoaFisica.id">
+                    {{ pessoaFisica.nome }} CPF: {{ pessoaFisica.cpf }}
+                  </mat-option>
+                }
+              </mat-select>
+              <mat-error>O campo Pessoa Física é obrigatório</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+      }
+
+      @if (HasPessoaFisica) {
+        <mat-grid-tile [rowspan]="2">
+          <div class="controles-container">
+            <mat-form-field>
+              <mat-label>Revenda</mat-label>
+              <mat-select formControlName="revenda">
+                <mat-option value="0">--Selecione--</mat-option>
+                @for (revenda of pessoaJuridicaService.pessoaJuridicaList; track revenda) {
+                  <mat-option [value]="revenda.id">
+                    {{ revenda.razaoSocial }} CNPJ: {{ revenda.cnpj }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+      }
+
+      @if (!HasPessoaFisica) {
+        <mat-grid-tile [rowspan]="2">
+          <div class="controles-container">
+            <mat-form-field>
+              <mat-label>Pessoa Jurídica*</mat-label>
+              <mat-select formControlName="pessoaJuridica">
+                <mat-option value="0">--Selecione--</mat-option>
+                @for (pessoaJuridica of pessoaJuridicaService.pessoaJuridicaList; track pessoaJuridica) {
+                  <mat-option [value]="pessoaJuridica.id">
+                    {{ pessoaJuridica.razaoSocial }} CNPJ: {{ pessoaJuridica.cnpj }}
+                  </mat-option>
+                }
+              </mat-select>
+              <mat-error>O campo Pessoa Jurídica é obrigatório</mat-error>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+      }
+
+      @if (!HasPessoaFisica) {
+        <mat-grid-tile [rowspan]="2">
+          <div class="controles-container">
+            <mat-form-field>
+              <mat-label>Cliente Associado</mat-label>
+              <mat-select formControlName="clienteAssociado">
+                <mat-option value="0">--Selecione--</mat-option>
+                @for (clienteAssociado of clienteAssociadoService.clienteAssociadoList; track clienteAssociado) {
+                  <mat-option [value]="clienteAssociado.id">
+                    {{ clienteAssociado.nome }} - Tel: {{ clienteAssociado.nome }}
+                  </mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </mat-grid-tile>
+      }
+
+      <!-- NÃO FICAM EM GARANTIA -->
+      <!-- <mat-grid-tile [rowspan]="2">
+      <div class="controles-container">
+        <mat-form-field>
+          <mat-label>Troca Já Efetuada</mat-label>
+          <mat-select formControlName="trocaJaEfetuada" [(ngModel)]="trocaJaEfetuada">
+            <mat-option [value]="false">Não</mat-option>
+            <mat-option [value]="true">Sim</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile> -->
+
+    <!-- <mat-grid-tile [rowspan]="2" *ngIf="trocaJaEfetuada ==  true">
+    <div class="controles-container">
+
+      <mat-form-field>
+        <input [readonly]="formEntradaAssistencia.controls['id'].value" formControlName="numeroProtocoloTroca" matInput placeholder="Número Protocolo Troca">
+      </mat-form-field>
+    </div>
+  </mat-grid-tile> -->
+
+  @if (!HasPessoaFisica) {
+    <mat-grid-tile [rowspan]="2">
+      <div class="controles-container">
+        <mat-form-field>
+          <input formControlName="numeroRemessa" matInput placeholder="Número de Remessa">
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  }
+
+  <mat-grid-tile [rowspan]="2">
+    <div class="controles-container">
+
+      <mat-form-field>
+        <input formControlName="numeroSerie" matInput placeholder="Número de Série">
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+
+  @if (!HasPessoaFisica) {
+    <mat-grid-tile [rowspan]="2">
+      <div class="controles-container">
+        <mat-form-field>
+          <input formControlName="numeroNF" matInput placeholder="Número NF">
+          <mat-error>O campo Número Nota Fiscal é obrigatório</mat-error>
+        </mat-form-field>
+      </div>
+    </mat-grid-tile>
+  }
+
+  <mat-grid-tile [rowspan]="2">
+    <div class="controles-container">
+
+      <mat-form-field>
+        <input formControlName="numeroComprovanteCompra" matInput placeholder="Número Comprovante*">
+        <mat-error>O campo Número Comprovante é obrigatório</mat-error>
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [rowspan]="2">
+    <div class="controles-container">
+      <mat-form-field>
+        <mat-label>Tipo de Comprovante*</mat-label>
+        <mat-select formControlName="comprovanteCompra">
+          <mat-option value="0">--Selecione--</mat-option>
+          @for (comprovanteCompra of comprovanteCompraService.comprovanteCompraList; track comprovanteCompra) {
+            <mat-option [value]="comprovanteCompra.id">
+              {{comprovanteCompra.descricao}}
+            </mat-option>
+          }
+        </mat-select>
+        <mat-error>O campo Tipo de Comprovante é obrigatório</mat-error>
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+
+  <mat-grid-tile [rowspan]="2">
+    <div class="controles-container">
+      <mat-form-field>
+        <mat-label>Entregue Por</mat-label>
+        <mat-select formControlName="entreguePor">
+          <mat-option value="0">--Selecione--</mat-option>
+          @for (entreguePor of entreguePorService.entreguePorList; track entreguePor) {
+            <mat-option [value]="entreguePor.id">
+              {{entreguePor.descricao}}
+            </mat-option>
+          }
+        </mat-select>
+        <mat-error>O campo Entregue Por é obrigatório</mat-error>
+      </mat-form-field>
+    </div>
+  </mat-grid-tile>
+
+
+  <!-- Código de rastreio entrará apenas em liberado, após aguardando saída,
+  em saída máquina. -->
+  <!-- <mat-grid-tile [rowspan]="2">
+  <div class="controles-container">
+
+    <mat-form-field>
+      <input formControlName="codigoRastreio" matInput placeholder="Código de Rastreio">
+      <mat-error>O campo Código de Rastreio é obrigatório</mat-error>
+    </mat-form-field>
+  </div>
+</mat-grid-tile> -->
+
+<mat-grid-tile [rowspan]="2">
+  <div class="controles-container">
+    <mat-form-field>
+      <mat-label>Funcionário</mat-label>
+      <mat-select formControlName="funcionario">
+        <mat-option value="0">--Selecione--</mat-option>
+        @for (funcionario of funcionarioService.funcionarioList; track funcionario) {
+          <mat-option [value]="funcionario.id">
+            {{funcionario.nome}}
+          </mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  </div>
+</mat-grid-tile>
+
+<mat-grid-tile [rowspan]="2">
+  <div class="controles-container">
+    <mat-form-field>
+      <mat-label>Máquina*</mat-label>
+      <mat-select formControlName="maquina">
+        @for (maquina of maquinaService.maquinaList; track maquina) {
+          <mat-option [value]="maquina.id">
+            {{maquina.descricao}} {{maquina.modelo}}
+          </mat-option>
+        }
+      </mat-select>
+      <mat-error>O campo Máquina é obrigatório</mat-error>
+    </mat-form-field>
+  </div>
+</mat-grid-tile>
+
+<mat-grid-tile [rowspan]="2">
+  <div class="controles-container">
+    <mat-form-field>
+      <mat-label>Acessórios*</mat-label>
+      <mat-select formControlName="acessorioList" multiple>
+        <mat-option value="0">--Selecione--</mat-option>
+        @for (acessorio of acessorioService.acessorioList; track acessorio) {
+          <mat-option [value]="acessorio.id">
+            {{ acessorio.descricao }}
+          </mat-option>
+        }
+      </mat-select>
+      <mat-error>O campo Acessório é obrigatório</mat-error>
+    </mat-form-field>
+  </div>
+</mat-grid-tile>
+
+<mat-grid-tile [rowspan]="2">
+  <div class="controles-container">
+    <mat-form-field>
+      <mat-label>Descricao</mat-label>
+      <textarea matInput formControlName="descricao"></textarea>
+    </mat-form-field>
+  </div>
+</mat-grid-tile>
+
+@if (acessoBotoes) {
+  <mat-grid-tile [colspan]="2" id="buttonSave">
+    <div class="controles-container">
+      <div class="button-row">
+        <button mat-raised-button color="primary" type="submit" class="buttonSaveEntrada" [disabled]="service.form.invalid">Salvar</button>
+        <button mat-raised-button color="warn" (click)="onClear()">Limpar</button>
+      </div>
+    </div>
+  </mat-grid-tile>
+}
+
+@if (!acessoBotoes) {
+  <mat-grid-tile [colspan]="2" id="buttonSave">
+    <div class="controles-container">
+      <div class="button-row">
+        <button mat-raised-button color="warn" (click)="onClickDescricao()">Adicionar Descricao</button>
+      </div>
+    </div>
+  </mat-grid-tile>
+}
+
+
+
+</mat-grid-list>
+
+<!-- <mat-grid-list cols="1" rowHeight="400px">
+<mat-grid-tile id="file-list-element">           -->
+  @if (!isNew && acessoBotoes) {
+    <div class="documentos-container">
+      <app-entrada-assistencia-files [files]="entradaAssistenciaDocumentoList" (notify)="onNotify($event)"></app-entrada-assistencia-files>
+    </div>
+  }
+<!-- </mat-grid-tile>
+</mat-grid-list> -->
+</form>
+</mat-tab>
+
+
+@if (!isNew && acessoBotoes) {
+  <mat-tab label="Arquivos">
+    <mat-grid-list cols="1" rowHeight="400px">
+      <mat-grid-tile id="upload-element">
+        <app-upload></app-upload>
+      </mat-grid-tile>
+    </mat-grid-list>
+  </mat-tab>
+}
+</mat-tab-group>

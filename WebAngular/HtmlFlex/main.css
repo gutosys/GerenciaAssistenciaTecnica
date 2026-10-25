@@ -1,0 +1,21 @@
+
+.pai{
+    display: grid;
+    background-color: purple;
+    width: 100%;
+    height: 50px;
+    grid-template-columns: auto 100px auto;
+}
+
+.elemento-um {    
+    background-color: blue;
+     
+}
+
+.elemento-dois{
+    background-color: orange;
+}
+
+.elemento-tres{
+    background-color: green;
+}

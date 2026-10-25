@@ -1,0 +1,14 @@
+
+@for (document of files; track document) {
+  <div>
+    <mat-card appearance="outlined" class="card-documento">
+      <mat-card-title>aljsdasbdjhasbdas</mat-card-title>
+      <mat-card-content>{{ document.fileName }}</mat-card-content>
+      <mat-card-actions>
+        <div class="button-row">
+          <button mat-raised-button color="primary" type="button" (click)="buttonRemoveFile(document.id)" >Remover Arquivo</button>
+        </div>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+}
