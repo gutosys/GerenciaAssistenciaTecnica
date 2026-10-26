@@ -1,316 +1,373 @@
 @use '@angular/material' as mat;
-html,
-body
-{
-    height: 100%;
-}
 
-body {
-    margin: 0;
-}
-// Custom Theming for Angular Material
-// For more information: https://material.angular.io/guide/theming
-// Plus imports for other components in your app.
-
-// Include the common styles for Angular Material. We include this here so that you only
-// have to load a single css file for Angular Material in your app.
-// Be sure that you only ever include this mixin once!
-// TODO(v15): As of v15 mat.legacy-core no longer includes default typography styles.
-//  The following line adds:
-//    1. Default typography styles for all components
-//    2. Styles for typography hierarchy classes (e.g. .mat-headline-1)
-//  If you specify typography styles for the components you use elsewhere, you should delete this line.
-//  If you don't need the default component typographies but still want the hierarchy styles,
-//  you can delete this line and instead use:
-//    `@include mat.legacy-typography-hierarchy(mat.define-legacy-typography-config());`
 @include mat.core();
 
-// Define the palettes for your theme using the Material Design palettes available in palette.scss
-// (imported above). For each palette, you can optionally specify a default, lighter, and darker
-// hue. Available color palettes: https://material.io/design/color/
-$gerencia-assistencia-tecnica-primary: mat.m2-define-palette(mat.$m2-indigo-palette);
-$gerencia-assistencia-tecnica-accent: mat.m2-define-palette(mat.$m2-pink-palette, A200, A100, A400);
-
-// The warn palette is optional (defaults to red).
-$gerencia-assistencia-tecnica-warn: mat.m2-define-palette(mat.$m2-red-palette);
-
-// Create the theme object (a Sass map containing all of the palettes).
-$gerencia-assistencia-tecnica-theme: mat.m2-define-light-theme((
+$app-primary: mat.m2-define-palette(mat.$m2-teal-palette, 700, 500, 800);
+$app-accent: mat.m2-define-palette(mat.$m2-amber-palette, A200, A100, A400);
+$app-warn: mat.m2-define-palette(mat.$m2-red-palette);
+$app-theme: mat.m2-define-light-theme((
   color: (
-    primary: $gerencia-assistencia-tecnica-primary,
-    accent: $gerencia-assistencia-tecnica-accent,
-    warn: $gerencia-assistencia-tecnica-warn
+    primary: $app-primary,
+    accent: $app-accent,
+    warn: $app-warn
   )
 ));
 
-// Include theme styles for core and each component used in your app.
-// Alternatively, you can import and @include the theme mixins for each component
-// that you are using.
-@include mat.all-component-themes($gerencia-assistencia-tecnica-theme);
+@include mat.all-component-themes($app-theme);
 
-/* You can add global styles to this file, and also import other style files */
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
-
-.normal-form{
-    margin: 10px;
+:root {
+  color-scheme: light;
+  --app-ink: #172a3a;
+  --app-muted: #6c7b89;
+  --app-primary: #167d76;
+  --app-primary-dark: #105d59;
+  --app-accent: #e0a43a;
+  --app-line: #e2e8eb;
+  --app-canvas: #f3f6f6;
+  --app-surface: #fff;
+  --app-radius: 16px;
+  --app-shadow: 0 12px 30px rgb(28 48 59 / 7%);
 }
 
-.controles-container{
-    height: 100%;
-    width: 100%;
-    padding: 0px;
-    position: relative;
+html,
+body {
+  min-height: 100%;
+  margin: 0;
 }
 
-.controles-container > *{
-    width: 100%;
+body {
+  background: var(--app-canvas);
+  color: var(--app-ink);
+  font-family: 'DM Sans', 'Segoe UI', sans-serif;
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
-.controles-container.buttons{
-    padding: 0;
+* {
+  box-sizing: border-box;
 }
 
-.add-bottom-padding{
-    padding-bottom: 10px;
+button,
+input {
+  font: inherit;
 }
 
-.button-row{
-    position: absolute;
-    bottom: 0px;
-    display: flex;
-    justify-content: flex-end;
-
-    button{
-        margin: 5px;
-    }
+a {
+  color: var(--app-primary);
 }
 
-/*Notification*/
-snack-bar-container.success{
-    background-color: #5cb85c;
-    color: #fff;
+.normal-form {
+  margin: 10px;
 }
 
-snack-bar-container.warn {
-    background-color: #f99157;
-    color : #fff;
-  }
-
-snack-bar-container.notification simple-snack-bar{
-    font-size: 18px !important;
-    font-weight: bold;
+.controles-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  padding: 0;
 }
 
+.controles-container > * {
+  width: 100%;
+}
 
-/*Table*/
-.full-width-table {
-    width: 100%;
-  }
-  
-  table {
-    width: 100%;
-  }
+.controles-container.buttons {
+  padding: 0;
+}
 
-  .hide{
-      display: none;
-  }
+.add-bottom-padding {
+  padding-bottom: 10px;
+}
 
-  mat-footer-row mat-footer-cell{
-      justify-content: center;
-      font-style: italic;
-  }
+.button-row {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+}
 
-/*Material Grid Entrada Assistencia */
-#acessorio button{
-    margin-left: 10px;
+.button-row button {
+  margin: 5px;
+}
+
+.mat-mdc-button-base {
+  border-radius: 10px !important;
+  font-weight: 600 !important;
+  letter-spacing: .01em !important;
+}
+
+.mat-mdc-raised-button.mat-primary,
+.mat-mdc-unelevated-button.mat-primary {
+  --mdc-protected-button-container-color: var(--app-primary);
+  --mdc-filled-button-container-color: var(--app-primary);
+  --mdc-protected-button-label-text-color: #fff;
+  --mdc-filled-button-label-text-color: #fff;
+}
+
+.mat-mdc-form-field {
+  --mdc-outlined-text-field-container-shape: 11px;
+  --mdc-filled-text-field-container-shape: 11px;
+}
+
+.mat-mdc-card {
+  border-color: var(--app-line) !important;
+  border-radius: var(--app-radius) !important;
+  box-shadow: var(--app-shadow) !important;
+}
+
+.mat-elevation-z8 {
+  overflow: hidden;
+  border: 1px solid var(--app-line);
+  border-radius: var(--app-radius);
+  background: var(--app-surface);
+  box-shadow: var(--app-shadow) !important;
+}
+
+.full-width-table,
+table {
+  width: 100%;
+}
+
+.mat-mdc-table {
+  background: var(--app-surface) !important;
+}
+
+.mat-mdc-header-row {
+  background: #f7f9f9;
+}
+
+.mat-mdc-header-cell {
+  color: #637482;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.mat-mdc-cell,
+.mat-mdc-header-cell {
+  border-bottom-color: var(--app-line) !important;
+}
+
+.mat-mdc-row {
+  transition: background-color 140ms ease;
+}
+
+.mat-mdc-row:hover {
+  background: #f7fbfa;
+}
+
+.mat-mdc-paginator {
+  border-top: 1px solid var(--app-line);
+  background: #fff;
+}
+
+.hide {
+  display: none !important;
+}
+
+mat-footer-row mat-footer-cell {
+  justify-content: center;
+  color: var(--app-muted);
+  font-style: italic;
+}
+
+#acessorio button {
+  margin-left: 10px;
 }
 
 #acessorio.mat-grid-tile .mat-figure {
-    justify-content: flex-start !important ;
-    align-items: flex-start !important;
- }
-
- .dialogCustom {
-    div.mat-tab-body-content{
-        padding-bottom: 5px;
-    }
-
-    mat-dialog-container {
-        padding: 0px;
-    }
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
 }
 
-
-
-//JANELA DE FORM
-mat-dialog-container{
-    padding: 0px !important;
+.dialogCustom div.mat-tab-body-content {
+  padding-bottom: 5px;
 }
 
-mat-toolbar{
-    background-color: #3f51b5 !important;
-    color: white !important;
-
-    button{
-        background-color: #7280ce !important;
-    }
+.mat-mdc-dialog-container .mdc-dialog__surface {
+  overflow: hidden;
+  border-radius: 18px !important;
 }
 
-
-#buttonSave{
-    margin-top: 10px;
-    padding-bottom: 10px;
+#buttonSave {
+  margin-top: 10px;
+  padding-bottom: 10px;
 }
 
-#buttonSave .controles-container{
-    padding-left: 0px;
+#buttonSave .controles-container {
+  padding-left: 0;
 }
 
-.buttonSaveEntrada {    
-    margin-left: 0px;
+.buttonSaveEntrada {
+  margin-left: 0;
 }
 
-
-
-/*UPLOAD*/
-#upload-element{
-    position: relative;
+#upload-element {
+  position: relative;
 }
 
-#upload-element.mat-grid-tile{
-    overflow-y: auto;
-    border: 1px solid #8f9cb5;
-    margin: 10px 0px 10px 0px;
+#upload-element.mat-grid-tile {
+  overflow-y: auto;
+  margin: 10px 0;
+  border: 1px solid var(--app-line);
+  border-radius: 12px;
 }
 
-#upload-element mat-file-upload-queue{
-    position: absolute;
-    bottom: 0px;
-    right: 0px;
-    max-height: 232px;
-    overflow-y: auto;
+#upload-element mat-file-upload-queue {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  overflow-y: auto;
+  max-height: 232px;
 }
 
-#upload-element div.upload-select-item{
-    position: absolute;
-    left: 5px;
+#upload-element div.upload-select-item {
+  position: absolute;
+  left: 5px;
 }
 
-mat-file-upload mat-card{
-    margin: 5px;
+mat-file-upload mat-card {
+  margin: 5px;
 }
 
-  /*filter controls */
-.search-div{
-    margin: 10px;
-    display: grid;
-    grid-template-columns: 280px 40px auto;
-      }
-      .search-form-field{
-          width: 96%;
-          margin-left: 10px;
-          padding: 5px 10px;          
-          box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12)
-          }
-          .search-form-field div.mat-form-field-underline {
-              display: none;
-          }
-          .search-form-field div.mat-form-field-infix{
-              border-top: 0px;
-          }
-          .search-form-field div.mat-form-field-wrapper{
-            padding-bottom: 0px;
-        }
-        .search-form-field div.mat-form-field-suffix button{
-            height: 32px;
-            width: 32px;
-        }
+.search-div {
+  display: grid;
+  grid-template-columns: auto 44px minmax(220px, 340px);
+  align-items: center;
+  gap: 14px;
+  margin: 0 0 18px;
+}
 
-            /* for dialog pop-up */
-  .btn-dialog-close{
-    width: 45px;
-    min-width: 0px !important;
-    height: 40px;
-    padding: 0px !important;
+.search-form-field {
+  width: 100%;
+  margin: 0;
+}
+
+.search-form-field .mat-mdc-form-field-subscript-wrapper {
+  display: none;
+}
+
+.search-form-field .mat-mdc-text-field-wrapper {
+  background: #fff;
+}
+
+.btn-dialog-close {
+  width: 45px;
+  min-width: 0 !important;
+  height: 40px;
+  padding: 0 !important;
+}
+
+.fill-remaining-space {
+  flex: 1 1 auto;
+}
+
+.confirm-dialog-container .content-container {
+  display: flex;
+  margin: 5px 5px 15px;
+  color: var(--app-muted);
+}
+
+.confirm-dialog-container #close-icon {
+  order: 2;
+  margin-left: auto;
+  font-weight: 700;
+}
+
+.confirm-dialog-container #close-icon:hover {
+  cursor: pointer;
+}
+
+.confirm-dialog-container #no-button,
+.confirm-dialog-container #yes-button {
+  width: 50%;
+  height: 50px;
+  border-radius: 0;
+  color: #fff;
+}
+
+.confirm-dialog-container #no-button {
+  background: #cc5b57;
+}
+
+.confirm-dialog-container #yes-button {
+  background: var(--app-primary);
+}
+
+.confirm-dialog-container span.content-span {
+  padding: 35px 16px;
+  text-align: center;
+  font-size: 18px;
+}
+
+.label-list {
+  min-height: 42px;
+  margin-right: 0;
+  padding: 0 16px;
+  border-radius: 10px;
+  background: #e7f2f0;
+  color: var(--app-primary-dark);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 42px;
+  text-align: left;
+}
+
+.usuario-invalido {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 42px;
+  margin: 0;
+  border: 1px solid #f3caca;
+  border-radius: 10px;
+  background: #fff2f1;
+  color: #a83532;
+  text-align: center;
+}
+
+.usuario-invalido li {
+  list-style: none;
+}
+
+snack-bar-container.success,
+.mat-mdc-snack-bar-container.success {
+  --mdc-snackbar-container-color: #237a55;
+  --mdc-snackbar-supporting-text-color: #fff;
+}
+
+snack-bar-container.warn,
+.mat-mdc-snack-bar-container.warn {
+  --mdc-snackbar-container-color: #a86418;
+  --mdc-snackbar-supporting-text-color: #fff;
+}
+
+.mat-mdc-snack-bar-container.notification {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  .search-div {
+    grid-template-columns: minmax(0, 1fr) 44px;
+    gap: 10px;
   }
 
-  .fill-remaining-space {
-    /* This fills the remaining space, by using flexbox. 
-       Every toolbar row uses a flexbox row layout. */
-    flex: 1 1 auto;
+  .search-div .label-list {
+    grid-column: 1 / -1;
   }
 
-    /* mat-confirm-dialog (customised dialog) */
-    .confirm-dialog-container .mat-dialog-container {
-        border-radius: .25em .25em .4em .4em;
-        padding: 0px;
-    }
-    .confirm-dialog-container .content-container{
-        margin: 5px 5px 15px 5px;
-        color: #8f9cb5;
-        display: flex;
-    }
-    .confirm-dialog-container #close-icon{
-        margin-left: auto;
-        order: 2;
-        font-weight: bolder;
-    }
-    .confirm-dialog-container #close-icon:hover{
-    cursor: pointer;
-    }
-    
-    .confirm-dialog-container #no-button{
-    height: 50px;
-    width: 50%;
-    background-color: #fc7169;
-    color:white;
-    border-radius: 0px;
-    }
-    
-    .confirm-dialog-container #yes-button{
-        height: 50px;
-        width: 50%;
-        background-color: #b6bece;
-        color:white;
-        border-radius: 0px;
-    }
-    
-    .confirm-dialog-container span.content-span{
-        padding:  35px 16px;
-        text-align: center;
-        font-size: 20px;
-    }
+  .search-form-field {
+    grid-column: 1 / 2;
+    grid-row: 2;
+  }
 
-
-    .label-list{        
-        text-align: center;
-        line-height: 42px;
-
-        background-color: #675e5e;
-        color:white;
-        margin-right: 10px;
-
-        box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 
-                    0px 2px 2px 0px rgba(0, 0, 0, 0.14), 
-                    0px 1px 5px 0px rgba(0, 0, 0, 0.12);
-    }
-
-
-
-    .usuario-invalido{
-        width: 350px;
-        height: 30px;
-        background-color: crimson;
-        color: white;
-        text-align: center;
-        font-weight: 300;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-    
-        li{
-            list-style-type: none;
-        }
-    }
+  .search-div > button {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}

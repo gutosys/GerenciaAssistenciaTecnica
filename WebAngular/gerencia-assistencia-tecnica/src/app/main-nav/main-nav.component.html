@@ -1,15 +1,23 @@
 <mat-sidenav-container class="sidenav-container">
   @if (securityObject.isAuthenticated) {
-    <mat-sidenav #drawer class="sidenav mat-elevation-z4" fixedInViewport="false"
+    <mat-sidenav #drawer class="sidenav" fixedInViewport="false"
       [attr.role]="(isHandset$ | async) ? 'dialog' : 'navigation'"
       [mode]="(isHandset$ | async) ? 'over' : 'side'"
       [opened]="!(isHandset$ | async)"
       >
-      <mat-toolbar class="menu">Menu</mat-toolbar>
-      <mat-nav-list>
-        <mat-list-item [matMenuTriggerFor]="menuCadastro" *hasClaim="'CanAccessCadastro'">
-          <mat-icon>unfold_more</mat-icon>
-          <a matline>Cadastro</a>
+      <div class="sidebar-brand">
+        <span class="brand-mark"><mat-icon>handyman</mat-icon></span>
+        <span class="brand-copy">
+          <strong>Oficina</strong>
+          <small>gestão técnica</small>
+        </span>
+      </div>
+      <div class="sidebar-caption">MENU PRINCIPAL</div>
+      <mat-nav-list class="navigation-list">
+        <mat-list-item class="navigation-item" [matMenuTriggerFor]="menuCadastro" *hasClaim="'CanAccessCadastro'">
+          <mat-icon matListItemIcon>folder_open</mat-icon>
+          <span matListItemTitle>Cadastros</span>
+          <mat-icon class="navigation-expand">expand_more</mat-icon>
         </mat-list-item>
         <mat-menu #menuCadastro="matMenu">
           <button mat-menu-item [routerLink]="['/regime-tributario']" *hasClaim="'CanAccessTipoEmpresa'">Regime Tributário</button>
@@ -25,26 +33,29 @@
           <button mat-menu-item [routerLink]="['/acessorio']">Acessórios</button>
           <!-- <button mat-menu-item [routerLink]="['/cliente-associado']" *hasClaim="'CanAccessClienteAssociado'">Cliente Associado</button>   -->
         </mat-menu>
-        <mat-list-item [matMenuTriggerFor]="menuEstoque">
-          <mat-icon>unfold_more</mat-icon>
-          <a matline>Estoque</a>
+        <mat-list-item class="navigation-item" [matMenuTriggerFor]="menuEstoque">
+          <mat-icon matListItemIcon>inventory_2</mat-icon>
+          <span matListItemTitle>Estoque</span>
+          <mat-icon class="navigation-expand">expand_more</mat-icon>
         </mat-list-item>
         <mat-menu #menuEstoque="matMenu">
           <button mat-menu-item [routerLink]="['/categoria']" *hasClaim="'CanAccessCategoria'">Categoria</button>
           <button mat-menu-item [routerLink]="['/componente']" *hasClaim="'CanAccessComponente'">Componente</button>
           <button mat-menu-item [routerLink]="['/estoque']" *hasClaim="'CanAccessEstoque'">Estoque</button>
         </mat-menu>
-        <mat-list-item [matMenuTriggerFor]="menuAssitencia">
-          <mat-icon>unfold_more</mat-icon>
-          <a matline>Assistência Técnica</a>
+        <mat-list-item class="navigation-item" [matMenuTriggerFor]="menuAssitencia">
+          <mat-icon matListItemIcon>build</mat-icon>
+          <span matListItemTitle>Assistência técnica</span>
+          <mat-icon class="navigation-expand">expand_more</mat-icon>
         </mat-list-item>
         <mat-menu #menuAssitencia="matMenu">
           <button mat-menu-item [routerLink]="['/entrada-assistencia']" *hasClaim="'CanAccessEntradaAssistencia'">Entrada Assistência Técnica</button>
           <button mat-menu-item [routerLink]="['/board-assistencia-tecnica']" *hasClaim="'CanAccessBoardAssistencia'">Board Assistência Técnica</button>
         </mat-menu>
-        <mat-list-item [matMenuTriggerFor]="menuGarantia">
-          <mat-icon>unfold_more</mat-icon>
-          <a matline>Garantia</a>
+        <mat-list-item class="navigation-item" [matMenuTriggerFor]="menuGarantia">
+          <mat-icon matListItemIcon>verified_user</mat-icon>
+          <span matListItemTitle>Garantia</span>
+          <mat-icon class="navigation-expand">expand_more</mat-icon>
         </mat-list-item>
         <mat-menu #menuGarantia="matMenu">
           <button mat-menu-item [routerLink]="['/board-garantia']" *hasClaim="'CanAccessBoardGarantia'">Board Garantia</button>
@@ -53,7 +64,7 @@
     </mat-sidenav>
   }
   <mat-sidenav-content>
-    <mat-toolbar color="primary">
+    <mat-toolbar class="topbar">
       @if (securityObject.isAuthenticated && (isHandset$ | async)) {
         <button
           type="button"
@@ -61,25 +72,29 @@
           mat-icon-button
           (click)="toggleSidenav()"
           >
-          <mat-icon aria-label="Side nav toggle icon">menu</mat-icon>
+          <mat-icon aria-label="Abrir menu">menu</mat-icon>
         </button>
       }
-      <span>GerenciaAssistenciaTecnica</span>
+      @if (!securityObject.isAuthenticated) {
+        <span class="topbar-brand">Oficina <span>técnica</span></span>
+      }
 
       <span class="spacer"></span>
 
-      <!-- <a [routerLink]="['/app-home']">Home</a> -->
-
-
       @if (!securityObject.isAuthenticated) {
-        <a routerLink="login">Login</a>
+        <a class="topbar-login" routerLink="login">Entrar <mat-icon>arrow_forward</mat-icon></a>
       }
       @if (securityObject.isAuthenticated) {
-        <a href="#" (onclick)="logout()">{{securityObject.userName}} - Sair</a>
+        <span class="user-greeting">{{securityObject.userName}}</span>
+        <button class="logout-button" type="button" mat-button (click)="logout()">
+          <mat-icon>logout</mat-icon>
+          Sair
+        </button>
       }
 
     </mat-toolbar>
-    <!-- Add Content Here -->
-    <ng-content></ng-content>
+    <main class="page-content">
+      <ng-content></ng-content>
+    </main>
   </mat-sidenav-content>
 </mat-sidenav-container>

@@ -1,0 +1,91 @@
+name: Deploy frontend
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "WebAngular/gerencia-assistencia-tecnica/**"
+      - ".github/workflows/deploy-frontend.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: deploy-frontend
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: windows-latest
+    defaults:
+      run:
+        working-directory: WebAngular/gerencia-assistencia-tecnica
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: WebAngular/gerencia-assistencia-tecnica/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build production frontend
+        run: npm run build -- --configuration production
+
+      - name: Include IIS configuration
+        shell: pwsh
+        run: Copy-Item -LiteralPath src/web.config -Destination dist/gerencia-assistencia-tecnica/browser/web.config
+
+      - name: Deploy with WebDeploy
+        shell: pwsh
+        env:
+          WEBDEPLOY_URL: ${{ secrets.WEBDEPLOY_URL }}
+          WEBDEPLOY_SITE: ${{ secrets.WEBDEPLOY_SITE }}
+          WEBDEPLOY_USERNAME: ${{ secrets.WEBDEPLOY_USERNAME }}
+          WEBDEPLOY_PASSWORD: ${{ secrets.WEBDEPLOY_PASSWORD }}
+        run: |
+          $requiredSecrets = @(
+            "WEBDEPLOY_URL",
+            "WEBDEPLOY_SITE",
+            "WEBDEPLOY_USERNAME",
+            "WEBDEPLOY_PASSWORD"
+          )
+          foreach ($name in $requiredSecrets) {
+            if ([string]::IsNullOrWhiteSpace([Environment]::GetEnvironmentVariable($name))) {
+              throw "Required GitHub Actions secret $name is not configured."
+            }
+          }
+
+          $msdeployCommand = Get-Command msdeploy.exe -ErrorAction SilentlyContinue
+          if ($msdeployCommand) {
+            $msdeployPath = $msdeployCommand.Source
+          }
+          else {
+            $candidates = @(
+              "$env:ProgramFiles\IIS\Microsoft Web Deploy V4\msdeploy.exe",
+              "$env:ProgramFiles\IIS\Microsoft Web Deploy V3\msdeploy.exe",
+              "${env:ProgramFiles(x86)}\IIS\Microsoft Web Deploy V3\msdeploy.exe"
+            )
+            $msdeployPath = $candidates | Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+          }
+          if (-not $msdeployPath) {
+            throw "Microsoft Web Deploy (msdeploy.exe) was not found on this runner."
+          }
+
+          $publishPath = Join-Path $PWD "dist/gerencia-assistencia-tecnica/browser"
+          if (-not (Test-Path -LiteralPath $publishPath -PathType Container)) {
+            throw "Production build output was not found at $publishPath."
+          }
+
+          $destination = "-dest:contentPath=$env:WEBDEPLOY_SITE,computerName=$env:WEBDEPLOY_URL,userName=$env:WEBDEPLOY_USERNAME,password=$env:WEBDEPLOY_PASSWORD,authType=Basic"
+          & $msdeployPath -verb:sync "-source:contentPath=$publishPath" $destination -enableRule:DoNotDeleteRule
+          if ($LASTEXITCODE -ne 0) {
+            throw "WebDeploy failed with exit code $LASTEXITCODE."
+          }

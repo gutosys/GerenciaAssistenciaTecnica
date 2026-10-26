@@ -5,44 +5,55 @@
 </div>
 </div> -->
 
-<div class="login">
+<section class="login-page">
+  <div class="login-intro">
+    <span class="login-brand-mark"><mat-icon>handyman</mat-icon></span>
+    <span class="eyebrow">OFICINA TÉCNICA</span>
+    <h1>Bem-vindo<br>de volta.</h1>
+    <p>Acesse sua área de trabalho para acompanhar serviços e manter a operação em movimento.</p>
+    <div class="intro-rule"><span></span></div>
+    <small>Gestão de assistência técnica</small>
+  </div>
+
+  <div class="login">
   @if (securityObject &&
     !securityObject.isAuthenticated) {
-    <div class="alert alert-danger">
+    <div class="login-error">
       <mat-card appearance="outlined" class="usuario-invalido">
-        <p>Usuário/Senha Inválido</p>
+        <mat-icon>error_outline</mat-icon>
+        <p>Usuário ou senha inválidos. Tente novamente.</p>
       </mat-card>
     </div>
   }
 
-  <mat-card appearance="outlined" class="example-card">
-    <mat-card-header>
-      <mat-card-title>Login</mat-card-title>
+  <mat-card appearance="outlined" class="login-card">
+    <mat-card-header class="login-card-header">
+      <mat-card-title>Acessar conta</mat-card-title>
+      <mat-card-subtitle>Informe seus dados para continuar</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
-      <form class="example-form">
-        <table class="example-full-width" cellspacing="0">
-          <tr>
-            <td>
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Login" [(ngModel)]="user.userName" name="userName" required>
-              </mat-form-field>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <mat-form-field class="example-full-width">
-                <input matInput placeholder="Password" [(ngModel)]="user.password" type="password" name="password"
-                  required>
-              </mat-form-field>
-            </td>
-          </tr>
-        </table>
+      <form class="login-form">
+        <mat-form-field appearance="outline">
+          <mat-label>Usuário</mat-label>
+          <input matInput [(ngModel)]="user.userName" name="userName" autocomplete="username" required>
+          <mat-icon matPrefix>person_outline</mat-icon>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Senha</mat-label>
+          <input matInput [(ngModel)]="user.password" type="password" name="password" autocomplete="current-password"
+            required>
+          <mat-icon matPrefix>lock_outline</mat-icon>
+        </mat-form-field>
       </form>
-      <mat-spinner [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
+      <mat-spinner diameter="30" [style.display]="showSpinner ? 'block' : 'none'"></mat-spinner>
     </mat-card-content>
-    <mat-card-actions>
-      <button mat-raised-button (click)="login()" color="primary">Entrar</button>
+    <mat-card-actions class="login-card-actions">
+      <button mat-raised-button (click)="login()" color="primary">
+        Entrar na plataforma
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
     </mat-card-actions>
   </mat-card>
-</div>
+  <p class="login-footnote">Acesso restrito a usuários autorizados</p>
+  </div>
+</section>

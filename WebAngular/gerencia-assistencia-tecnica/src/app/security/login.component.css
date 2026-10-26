@@ -1,23 +1,203 @@
-.login{
-    height: calc(100% - 64px);
-    display: flex;
-    flex-flow: column;
-    align-items: center; 
-    justify-content: center;
+.login-page {
+  display: grid;
+  width: min(100%, 980px);
+  min-height: min(650px, calc(100vh - 130px));
+  grid-template-columns: minmax(240px, .85fr) minmax(340px, 1fr);
+  align-items: center;
+  gap: clamp(35px, 7vw, 90px);
+  margin: 0 auto;
+  padding: 32px clamp(10px, 4vw, 48px);
 }
 
-.example-card {
-    width: 400px;    
+.login-intro {
+  padding: 20px 0;
 }
 
-.example-full-width{
-    width: 100%;
+.login-brand-mark {
+  display: grid;
+  width: 52px;
+  height: 52px;
+  place-items: center;
+  margin-bottom: 34px;
+  border-radius: 16px;
+  background: #e1efeb;
+  color: var(--app-primary);
 }
 
-.usuario-invalido{
-    width: 250px;
-    height: 15px;
-    background-color: crimson;
-    color: white;
-    text-align: center;    
+.login-brand-mark mat-icon {
+  width: 28px;
+  height: 28px;
+  font-size: 28px;
+}
+
+.login-intro .eyebrow {
+  color: var(--app-primary);
+  font-size: 10px;
+  letter-spacing: .14em;
+}
+
+.login-intro h1 {
+  margin: 15px 0;
+  color: #203745;
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  font-size: clamp(38px, 5vw, 56px);
+  font-weight: 800;
+  letter-spacing: -.06em;
+  line-height: 1.03;
+}
+
+.login-intro p {
+  max-width: 340px;
+  margin: 0;
+  color: var(--app-muted);
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.intro-rule {
+  width: 100%;
+  max-width: 230px;
+  height: 1px;
+  margin: 27px 0 14px;
+  background: var(--app-line);
+}
+
+.intro-rule span {
+  display: block;
+  width: 52px;
+  height: 2px;
+  background: var(--app-accent);
+}
+
+.login-intro small {
+  color: #86939b;
+  font-size: 11px;
+}
+
+.login {
+  display: flex;
+  flex-flow: column;
+  align-items: stretch;
+}
+
+.login-card {
+  width: 100%;
+  padding: clamp(22px, 4vw, 36px);
+  border-radius: 18px !important;
+  background: #fff;
+  box-shadow: 0 18px 48px rgb(32 55 69 / 9%) !important;
+}
+
+.login-card-header {
+  display: block;
+  margin-bottom: 25px;
+}
+
+.login-card-header .mat-mdc-card-title {
+  color: #203745;
+  font-family: 'Manrope', 'Segoe UI', sans-serif;
+  font-size: 23px;
+  font-weight: 750;
+  letter-spacing: -.04em;
+}
+
+.login-card-header .mat-mdc-card-subtitle {
+  margin-top: 7px;
+  color: var(--app-muted);
+  font-size: 12px;
+}
+
+.login-form {
+  display: grid;
+  gap: 13px;
+}
+
+.login-form mat-form-field {
+  width: 100%;
+}
+
+.login-form mat-icon {
+  margin-right: 8px;
+  color: #82939a;
+}
+
+.login-card mat-spinner {
+  margin: 8px auto 0;
+}
+
+.login-card-actions {
+  padding: 0 !important;
+  margin: 10px 0 0 !important;
+}
+
+.login-card-actions button {
+  display: flex;
+  width: 100%;
+  min-height: 48px;
+  justify-content: center;
+  gap: 9px;
+}
+
+.login-card-actions button mat-icon {
+  margin: 0;
+}
+
+.login-footnote {
+  margin: 17px 0 0;
+  color: #8a989f;
+  font-size: 11px;
+  text-align: center;
+}
+
+.login-error {
+  margin-bottom: 14px;
+}
+
+.usuario-invalido {
+  gap: 9px;
+  padding: 4px 12px;
+}
+
+.usuario-invalido mat-icon {
+  width: 19px;
+  height: 19px;
+  font-size: 19px;
+}
+
+.usuario-invalido p {
+  margin: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+@media (max-width: 700px) {
+  .login-page {
+    width: min(100%, 440px);
+    min-height: auto;
+    grid-template-columns: 1fr;
+    gap: 20px;
+    padding: 12px 0 28px;
+  }
+
+  .login-intro {
+    padding: 8px 5px 0;
+  }
+
+  .login-brand-mark {
+    width: 44px;
+    height: 44px;
+    margin-bottom: 18px;
+    border-radius: 13px;
+  }
+
+  .login-intro h1 {
+    margin: 10px 0;
+    font-size: 36px;
+  }
+
+  .login-intro p,
+  .intro-rule,
+  .login-intro small {
+    display: none;
+  }
 }

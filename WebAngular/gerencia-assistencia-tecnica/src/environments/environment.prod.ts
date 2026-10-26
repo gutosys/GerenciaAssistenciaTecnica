@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiUrl: 'https://boxersoldas.azurewebsites.net/api/'
+  apiUrl: 'https://gutosys-002-site4.ktempurl.com/api/'
 };
